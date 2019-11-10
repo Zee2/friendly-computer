@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "math.h"
 #include "font.h"
+#include "gfx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,42 +74,6 @@ static void MX_LTDC_Init(void);
 uint8_t framebuffer1[480*272];
 uint8_t framebuffer2[480*272];
 
-uint8_t draw_char(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint8_t* fb){
-  uint16_t x,y;
-
-  if(character == 0x20){
-    for(y = 0; y < 9; y++){
-      for(x = 0; x < 4; x++){
-        fb[pos_x + x + (pos_y + y) * 480] = 0xFF;
-      }
-    }
-
-    return 4;
-  }
-
-  uint8_t charIndex = character - 0x21;
-  uint16_t startpos = NeoSans_charpos[charIndex];
-  uint8_t width = NeoSans_charpos[charIndex + 1] - startpos;
-
-  for(y = 0; y < 9; y++){
-    for(x = 0; x < width; x++){
-      fb[pos_x + x + (pos_y + y) * 480] = NeoSans[x + startpos + 551*y];
-    }
-  }
-
-	return width;
-}
-
-
-void draw_string(uint8_t* str, uint16_t n, uint16_t pos_x, uint16_t pos_y, uint8_t* fb){
-  int i;
-  uint16_t horiz_pos = pos_x;
-
-  for(i = 0; i < n; i++){
-    horiz_pos += draw_char(str[i], horiz_pos, pos_y, fb);
-    for(volatile int wait = 0; wait < 100000; wait++){}
-  }
-}
 
 /* USER CODE END 0 */
 
@@ -200,10 +165,7 @@ int main(void)
 
   //HAL_I2C_Mem_Write(&hi2c1, 0x70, 0x0, 4, &(data[0]), 4, 100000);
 
-  char* teststring1 = "Hello world! This is our 395 project.";
-  char* teststring2 = "We can draw any string we want, and it uses variable width fonts.";
-  char* teststring3 = "It's running a 480*272 framebuffer living in our program memory SRAM.";
-  char* teststring4 = "ADDI R3, R0, 24";
+  char teststring1[64];
 
   for(int y = 0; y < 272; y++){
     for(int x = 0; x < 480; x++){
@@ -211,16 +173,19 @@ int main(void)
     }
   }
 
-  draw_string(teststring1, strlen(teststring1), 100, 100, currentFB);
-  draw_string(teststring2, strlen(teststring2), 100, 110, currentFB);
-  draw_string(teststring3, strlen(teststring3), 100, 120, currentFB);
-  draw_string(teststring4, strlen(teststring4), 100, 130, currentFB);
 
   while (1)
   {
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter, counter, counter, counter, counter, counter, counter);
+	  for(int j = 0; j < 20; j++){
+	  	  draw_string(teststring1, strlen(teststring1), 20, 20 + 10*j, currentFB);
+	  }
+
 
 	  /*
 	  if(counter % 2 == 0){
@@ -250,12 +215,9 @@ int main(void)
 		 }
 	 }*/
 	 int x = (counter % 480);
-	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 272;
-	 //currentFB[x + 480*y] = 0xFF;
+	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
+	 currentFB[x + 480*y] = 0x00;
 	 HAL_LTDC_SetAddress(&hltdc, currentFB, 0);
-	 for(volatile int i = 0; i < 10000; i++){
-
-	 }
 
 
 	 counter+=1;
