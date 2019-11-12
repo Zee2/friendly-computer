@@ -191,9 +191,6 @@ int main(void)
 	  }
 	  DrawMenu(currentPage, currentFB);
 
-
-
-
 	  /*
 	  if(counter % 2 == 0){
 		  currentFB = &(framebuffer1[0]);
@@ -202,46 +199,12 @@ int main(void)
 	  }
 		*/
 
-	  /*
-	 prev = cur;
-	 cur = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-	 if (prev ^ cur) {
-		 led = ~led;
-		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, led ? GPIO_PIN_SET : GPIO_PIN_RESET);
-	 }
-		*/
-	  /*
-	 for(int i = 0; i < 480*272; i += 1){
-		 currentFB[i] = (((i + counter) / 36) % 2 == 0) ? 0xFFFF : 0x0000;
-	 }*/
-	  /*
-	 for(int y = 0; y < 272; y++){
-		 for(int x = 0; x < 480; x++){
-			 currentFB[x + 480 * y] = ((x + (int)(counter * 0.1)) % 4 == 0) ? 0xFFFF : 0x0000;
-			 //framebuffer1[x + 480 * y] = 0xFFFF;
-		 }
-	 }*/
-	 int x = (counter % 480);
-	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
-	 currentFB[x + 480*y] = 0x00;
 	 HAL_LTDC_SetAddress(&hltdc, currentFB, 0);
 
 
 	 counter+=1;
 
 	 /*
-	 data[0] = 0xFF;
-	 for(int i = 0; i < 8; i+=1){
-		 data[i<<1] = 1 << ((i + counter / 20) % 8);
-		 //data[i+1+8] = 1 << (i << 1);
-	 }
-	 for(int i = 0; i < 8; i+=1){
-		 //data[(i<<1) + 1] = (unsigned int)(128) >> ((i + (counter / 10))%8 );
-		 data[(i<<1) + 1] = 1 << ((i + (counter / 20))%8 );
-		 //data[i+1+8] = 1 << (i << 1);
-	 }
-
-
 	 HAL_I2C_Mem_Write(&hi2c1, 0x70 << 1, 0x0, 1, &(data[0]), 16, 100000);
 	 HAL_I2C_Mem_Write(&hi2c1, 0x72 << 1, 0x0, 1, &(data[0]), 16, 100000);
 	 */
@@ -249,21 +212,31 @@ int main(void)
   /* USER CODE END 3 */
 }
 
+/**
+  * @brief  Draws appropriate menu page
+  * @retval none
+  */
 void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 	  char teststring1[64];
 	  char* startupmessage = "Welcome to the friendly computer";
 
-	if (currentPage == startup) {
+	if (currentPage == startup) 
+  {
 
 		draw_string(startupmessage, strlen(startupmessage), 20, 20, currentFB);
 
-	} else {
+	} 
+  else 
+  {
 		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
 				counter, counter, counter, counter, counter, counter);
 		for (int j = 0; j < 20; j++) {
 			draw_string(teststring1, strlen(teststring1), 20, 20 + 10 * j,
 					currentFB);
 		}
+    int x = (counter % 480);
+	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
+	 currentFB[x + 480*y] = 0x00;
 	}
 }
 
