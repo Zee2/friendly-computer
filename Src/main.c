@@ -172,11 +172,7 @@ int main(void)
   //HAL_I2C_Mem_Write(&hi2c1, 0x70, 0x0, 4, &(data[0]), 4, 100000);
 
 
-  for(int y = 0; y < 272; y++){
-    for(int x = 0; x < 480; x++){
-      currentFB[x + 480*y] = 0xFF;
-    }
-  }
+  ClearScreen(currentFB);
 
 
   while (1)
@@ -185,8 +181,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (counter > 3000)
+	  if (counter == 3000)
 	  {
+		  ClearScreen(currentFB);
 		  currentPage = home;
 	  }
 	  DrawMenu(currentPage, currentFB);
@@ -218,16 +215,17 @@ int main(void)
   */
 void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 	  char teststring1[64];
-	  char* startupmessage = "Welcome to the friendly computer";
+	  char* startupmessage = "Welcome to the friendly computer!";
 
 	if (currentPage == startup) 
   {
 
-		draw_string(startupmessage, strlen(startupmessage), 20, 20, currentFB);
+		draw_string(startupmessage, strlen(startupmessage), 100, 20, currentFB);
 
 	} 
-  else 
+  else if (currentPage == home)
   {
+    draw_string("Home", strlen("Home"), 20, 10, currentFB);
 		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
 				counter, counter, counter, counter, counter, counter);
 		for (int j = 0; j < 20; j++) {
@@ -239,6 +237,18 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 	 currentFB[x + 480*y] = 0x00;
 	}
 }
+/**
+  * @brief  Wipes frame buffer
+  * @retval none
+  */
+ void ClearScreen(uint8_t* currentFB)
+ {
+   for(int y = 0; y < 272; y++){
+    for(int x = 0; x < 480; x++){
+      currentFB[x + 480*y] = 0xFF;
+    }
+  }
+ }
 
 /**
   * @brief System Clock Configuration
