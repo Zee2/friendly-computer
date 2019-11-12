@@ -220,7 +220,7 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 	if (currentPage == startup) 
   {
 
-		draw_string(startupmessage, strlen(startupmessage), 100, 20, currentFB);
+		draw_string_scaled(startupmessage, strlen(startupmessage), 100, 20, currentFB, 2);
 
 	} 
   else if (currentPage == home)
