@@ -74,6 +74,10 @@ static void MX_LTDC_Init(void);
 uint8_t framebuffer1[480*272];
 uint8_t framebuffer2[480*272];
 
+enum InterfacePage {startup, home, settings, registers, error};
+
+uint16_t counter = 0;
+
 
 /* USER CODE END 0 */
 
@@ -84,7 +88,7 @@ uint8_t framebuffer2[480*272];
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	enum InterfacePage currentPage;
   /* USER CODE END 1 */
   
 
@@ -114,6 +118,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  currentPage = startup;
 
   int prev = 0;
   int cur = 0;
@@ -156,7 +162,7 @@ int main(void)
 
 
 
-  uint16_t counter = 0;
+
 
   uint8_t* currentFB = &framebuffer1[0];
 
@@ -165,7 +171,6 @@ int main(void)
 
   //HAL_I2C_Mem_Write(&hi2c1, 0x70, 0x0, 4, &(data[0]), 4, 100000);
 
-  char teststring1[64];
 
   for(int y = 0; y < 272; y++){
     for(int x = 0; x < 480; x++){
@@ -180,11 +185,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter, counter, counter, counter, counter, counter, counter);
-	  for(int j = 0; j < 20; j++){
-	  	  draw_string(teststring1, strlen(teststring1), 20, 20 + 10*j, currentFB);
+	  if (counter > 3000)
+	  {
+		  currentPage = home;
 	  }
+	  DrawMenu(currentPage, currentFB);
+
+
 
 
 	  /*
@@ -240,6 +247,24 @@ int main(void)
 	 */
   }
   /* USER CODE END 3 */
+}
+
+void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
+	  char teststring1[64];
+	  char* startupmessage = "Welcome to the friendly computer";
+
+	if (currentPage == startup) {
+
+		draw_string(startupmessage, strlen(startupmessage), 20, 20, currentFB);
+
+	} else {
+		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
+				counter, counter, counter, counter, counter, counter);
+		for (int j = 0; j < 20; j++) {
+			draw_string(teststring1, strlen(teststring1), 20, 20 + 10 * j,
+					currentFB);
+		}
+	}
 }
 
 /**
