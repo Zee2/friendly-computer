@@ -98,7 +98,7 @@ void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t* fb
   if (pos_x2 < pos_x1)//swap if needed
   {
     uint16_t temp = pos_x1;
-    pos x1 = pos_x2;
+    pos_x1 = pos_x2;
     pos_x2 = temp;
   }
   for (int i = pos_x1; i <=pos_x2; i++)
