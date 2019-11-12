@@ -106,3 +106,16 @@ void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t* fb
     fb[i + (pos_y) * SCREEN_WIDTH] = 0xFF;
   }
 }
+
+/**
+  * @brief  Wipes frame buffer
+  * @retval none
+  */
+ void ClearScreen(uint8_t* currentFB)
+ {
+   for(int y = 0; y < 272; y++){
+    for(int x = 0; x < 480; x++){
+      currentFB[x + 480*y] = 0xFF;
+    }
+  }
+ }

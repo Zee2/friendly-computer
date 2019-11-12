@@ -237,18 +237,6 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 	 currentFB[x + 480*y] = 0x00;
 	}
 }
-/**
-  * @brief  Wipes frame buffer
-  * @retval none
-  */
- void ClearScreen(uint8_t* currentFB)
- {
-   for(int y = 0; y < 272; y++){
-    for(int x = 0; x < 480; x++){
-      currentFB[x + 480*y] = 0xFF;
-    }
-  }
- }
 
 /**
   * @brief System Clock Configuration
