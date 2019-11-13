@@ -74,6 +74,10 @@ static void MX_I2C4_Init(void);
 uint8_t framebuffer1[480*272];
 uint8_t framebuffer2[480*272];
 
+enum InterfacePage {startup, home, settings, registers, error};
+
+uint16_t counter = 0;
+
 
 /* USER CODE END 0 */
 
@@ -84,7 +88,7 @@ uint8_t framebuffer2[480*272];
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	enum InterfacePage currentPage;
   /* USER CODE END 1 */
   
 
@@ -114,6 +118,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  currentPage = startup;
 
   int prev = 0;
   int cur = 0;
@@ -152,7 +158,7 @@ int main(void)
 
 
 
-  uint16_t counter = 0;
+
 
   uint8_t* currentFB = &framebuffer1[0];
 
@@ -161,13 +167,8 @@ int main(void)
 
   //HAL_I2C_Mem_Write(&hi2c1, 0x70, 0x0, 4, &(data[0]), 4, 100000);
 
-  char teststring1[64];
 
-  for(int y = 0; y < 272; y++){
-    for(int x = 0; x < 480; x++){
-      currentFB[x + 480*y] = 0xFF;
-    }
-  }
+  ClearScreen(currentFB);
 
 
   while (1)
@@ -176,12 +177,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter, counter, counter, counter, counter, counter, counter);
-	  for(int j = 0; j < 20; j++){
-	  	  draw_string(teststring1, strlen(teststring1), 20, 20 + 10*j, currentFB);
+	  if (counter == 3000)
+	  {
+		  ClearScreen(currentFB);
+		  currentPage = home;
 	  }
-
+	  DrawMenu(currentPage, currentFB);
 
 	  /*
 	  if(counter % 2 == 0){
@@ -191,28 +192,6 @@ int main(void)
 	  }
 		*/
 
-	  /*
-	 prev = cur;
-	 cur = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-	 if (prev ^ cur) {
-		 led = ~led;
-		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, led ? GPIO_PIN_SET : GPIO_PIN_RESET);
-	 }
-		*/
-	  /*
-	 for(int i = 0; i < 480*272; i += 1){
-		 currentFB[i] = (((i + counter) / 36) % 2 == 0) ? 0xFFFF : 0x0000;
-	 }*/
-	  /*
-	 for(int y = 0; y < 272; y++){
-		 for(int x = 0; x < 480; x++){
-			 currentFB[x + 480 * y] = ((x + (int)(counter * 0.1)) % 4 == 0) ? 0xFFFF : 0x0000;
-			 //framebuffer1[x + 480 * y] = 0xFFFF;
-		 }
-	 }*/
-	 int x = (counter % 480);
-	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
-	 currentFB[x + 480*y] = 0x00;
 	 HAL_LTDC_SetAddress(&hltdc, currentFB, 0);
 
 
@@ -236,6 +215,38 @@ int main(void)
 
   }
   /* USER CODE END 3 */
+}
+
+/**
+  * @brief  Draws appropriate menu page
+  * @retval none
+  */
+void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
+	  char teststring1[64];
+	  char* startupmessage = "Welcome to the friendly computer!";
+
+	if (currentPage == startup) 
+  {
+
+		draw_string_scaled(startupmessage, strlen(startupmessage), 100, 20, currentFB, 2);
+
+	} 
+  else if (currentPage == home)
+  {
+    draw_string("Home", strlen("Home"), 20, 10, currentFB);
+		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
+				counter, counter, counter, counter, counter, counter);
+		for (int j = 0; j < 1; j++) {
+			draw_string(teststring1, strlen(teststring1), 20, 20 + 10 * j,
+					currentFB);
+		}
+    draw_hor_line(10, 100, 40, 0x00, currentFB);
+    draw_vert_line(10, 20, 100, 0x00, currentFB);
+    draw_rect(40, 50, 100, 100, 0x00, currentFB);
+    int x = (counter % 480);
+	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
+	 currentFB[x + 480*y] = 0x00;
+	}
 }
 
 /**
