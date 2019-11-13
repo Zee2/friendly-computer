@@ -38,13 +38,13 @@ uint8_t draw_char_scaled(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint
   uint16_t x,y;
 
   if(character == 0x20){
-    for(y = 0; y < 9; y++){
-      for(x = 0; x < 4; x++){
+    for(y = 0; y < 9*scale; y++){
+      for(x = 0; x < 4*scale; x++){
         fb[pos_x + x + (pos_y + y) * 480] = 0xFF;
       }
     }
 
-    return 4;
+    return 4*scale;
   }
 
   uint8_t charIndex = character - 0x21;
