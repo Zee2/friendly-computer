@@ -2,7 +2,7 @@
  * sim.c
  *
  *  Created on: Nov 10, 2019
- *      Author: finnn
+ *      Author: finnn and aditya
  */
 
 #include "font.h"
@@ -79,7 +79,7 @@ void draw_string_scaled(uint8_t* str, uint16_t n, uint16_t pos_x, uint16_t pos_y
   }
 }
 
-void draw_vert_line(uint16_t pos_x, uint16_t pos_y1, uint16_t pos_y2, uint8_t* fb)
+void draw_vert_line(uint16_t pos_x, uint16_t pos_y1, uint16_t pos_y2, uint8_t color, uint8_t* fb)
 {
   if (pos_y2 < pos_y1)//swap if needed
   {
@@ -89,11 +89,11 @@ void draw_vert_line(uint16_t pos_x, uint16_t pos_y1, uint16_t pos_y2, uint8_t* f
   }
   for (int i = pos_y1; i <=pos_y2; i++)
   {
-    fb[pos_x + (i) * SCREEN_WIDTH] = 0xFF;
+    fb[pos_x + (i) * SCREEN_WIDTH] = color;
   }
 }
 
-void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t* fb)
+void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t color, uint8_t* fb)
 {
   if (pos_x2 < pos_x1)//swap if needed
   {
@@ -103,7 +103,7 @@ void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t* fb
   }
   for (int i = pos_x1; i <=pos_x2; i++)
   {
-    fb[i + (pos_y) * SCREEN_WIDTH] = 0xFF;
+    fb[i + (pos_y) * SCREEN_WIDTH] = color;
   }
 }
 

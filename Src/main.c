@@ -228,10 +228,12 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
     draw_string("Home", strlen("Home"), 20, 10, currentFB);
 		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
 				counter, counter, counter, counter, counter, counter);
-		for (int j = 0; j < 20; j++) {
+		for (int j = 0; j < 1; j++) {
 			draw_string(teststring1, strlen(teststring1), 20, 20 + 10 * j,
 					currentFB);
 		}
+    draw_hor_line(10, 100, 40, 0x00, currentFB);
+    draw_vert_line(10, 20, 100, 0x00, currentFB);
     int x = (counter % 480);
 	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
 	 currentFB[x + 480*y] = 0x00;
