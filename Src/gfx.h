@@ -19,4 +19,6 @@ void draw_string(uint8_t* str, uint16_t n, uint16_t pos_x, uint16_t pos_y, uint8
 void draw_vert_line(uint16_t pos_x, uint16_t pos_y1, uint16_t pos_y2, uint8_t color, uint8_t* fb);
 void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t color, uint8_t* fb);
 
+void draw_rect(uint16_t pos_x, uint16_t pos_y, uint16_t width, uint16_t height, uint8_t color, uint8_t* fb);
+
 #endif /* GFX_H_ */

@@ -107,6 +107,17 @@ void draw_hor_line(uint16_t pos_x1, uint16_t pos_x2, uint16_t pos_y, uint8_t col
   }
 }
 
+void draw_rect(uint16_t pos_x, uint16_t pos_y, uint16_t width, uint16_t height, uint8_t color, uint8_t* fb)
+{
+  for (int x = pos_x; x < pos_x + width; x++)
+  {
+    for (int y = pos_y; y < pos_y+ height; y++)
+    {
+      fb[x + (y) * SCREEN_WIDTH] = color;
+    }
+  }
+}
+
 /**
   * @brief  Wipes frame buffer
   * @retval none
