@@ -234,6 +234,7 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
 		}
     draw_hor_line(10, 100, 40, 0x00, currentFB);
     draw_vert_line(10, 20, 100, 0x00, currentFB);
+    draw_rect(40, 50, 100, 100, 0x00, currentFB);
     int x = (counter % 480);
 	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
 	 currentFB[x + 480*y] = 0x00;

@@ -111,7 +111,7 @@ void draw_rect(uint16_t pos_x, uint16_t pos_y, uint16_t width, uint16_t height, 
 {
   for (int x = pos_x; x < pos_x + width; x++)
   {
-    for (int y = pos_y; y < pos_y+ height; y++)
+    for (int y = pos_y; y < pos_y + height; y++)
     {
       fb[x + (y) * SCREEN_WIDTH] = color;
     }
