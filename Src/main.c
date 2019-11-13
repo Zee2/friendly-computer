@@ -51,7 +51,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c4;
 
 LTDC_HandleTypeDef hltdc;
 
@@ -62,8 +62,8 @@ LTDC_HandleTypeDef hltdc;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_LTDC_Init(void);
+static void MX_I2C4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -106,8 +106,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
   MX_LTDC_Init();
+  MX_I2C4_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -146,13 +146,9 @@ int main(void)
 
   uint8_t begin_addr = 0x0;
 
-  HAL_I2C_Master_Transmit(&hi2c1, 0x70 << 1, &osc_command, 1, 1000000);
-  HAL_I2C_Master_Transmit(&hi2c1, 0x70 << 1, &blink_command, 1, 1000000);
-  HAL_I2C_Master_Transmit(&hi2c1, 0x70 << 1, &brightness_command, 1, 100000);
-
-  HAL_I2C_Master_Transmit(&hi2c1, 0x72 << 1, &osc_command, 1, 1000000);
-  HAL_I2C_Master_Transmit(&hi2c1, 0x72 << 1, &blink_command, 1, 1000000);
-  HAL_I2C_Master_Transmit(&hi2c1, 0x72 << 1, &brightness_command, 1, 100000);
+  HAL_I2C_Master_Transmit(&hi2c4, 0x70 << 1, &osc_command, 1, 1000000);
+  HAL_I2C_Master_Transmit(&hi2c4, 0x70 << 1, &blink_command, 1, 1000000);
+  HAL_I2C_Master_Transmit(&hi2c4, 0x70 << 1, &brightness_command, 1, 100000);
 
 
 
@@ -222,22 +218,22 @@ int main(void)
 
 	 counter+=1;
 
-	 /*
+
 	 data[0] = 0xFF;
 	 for(int i = 0; i < 8; i+=1){
-		 data[i<<1] = 1 << ((i + counter / 20) % 8);
+		 data[i<<1] = 1 << ((i + counter / 2) % 8);
 		 //data[i+1+8] = 1 << (i << 1);
 	 }
 	 for(int i = 0; i < 8; i+=1){
 		 //data[(i<<1) + 1] = (unsigned int)(128) >> ((i + (counter / 10))%8 );
-		 data[(i<<1) + 1] = 1 << ((i + (counter / 20))%8 );
+		 data[(i<<1) + 1] = 1 << ((i + (counter / 2))%8 );
 		 //data[i+1+8] = 1 << (i << 1);
 	 }
 
 
-	 HAL_I2C_Mem_Write(&hi2c1, 0x70 << 1, 0x0, 1, &(data[0]), 16, 100000);
-	 HAL_I2C_Mem_Write(&hi2c1, 0x72 << 1, 0x0, 1, &(data[0]), 16, 100000);
-	 */
+	 HAL_I2C_Mem_Write(&hi2c4, 0x70 << 1, 0x0, 1, &(data[0]), 16, 1000);
+	 HAL_I2C_Mem_Write(&hi2c4, 0x72 << 1, 0x0, 1, &(data[0]), 16, 1000);
+
   }
   /* USER CODE END 3 */
 }
@@ -299,7 +295,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_I2C1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_I2C4;
   PeriphClkInitStruct.PLL3.PLL3M = 1;
   PeriphClkInitStruct.PLL3.PLL3N = 4;
   PeriphClkInitStruct.PLL3.PLL3P = 2;
@@ -308,7 +304,7 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_3;
   PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOWIDE;
   PeriphClkInitStruct.PLL3.PLL3FRACN = 2560;
-  PeriphClkInitStruct.I2c123ClockSelection = RCC_I2C123CLKSOURCE_D2PCLK1;
+  PeriphClkInitStruct.I2c4ClockSelection = RCC_I2C4CLKSOURCE_D3PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -316,48 +312,48 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief I2C1 Initialization Function
+  * @brief I2C4 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_I2C1_Init(void)
+static void MX_I2C4_Init(void)
 {
 
-  /* USER CODE BEGIN I2C1_Init 0 */
+  /* USER CODE BEGIN I2C4_Init 0 */
 
-  /* USER CODE END I2C1_Init 0 */
+  /* USER CODE END I2C4_Init 0 */
 
-  /* USER CODE BEGIN I2C1_Init 1 */
+  /* USER CODE BEGIN I2C4_Init 1 */
 
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00B07FFF;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  /* USER CODE END I2C4_Init 1 */
+  hi2c4.Instance = I2C4;
+  hi2c4.Init.Timing = 0x00B03FDB;
+  hi2c4.Init.OwnAddress1 = 0;
+  hi2c4.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c4.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c4.Init.OwnAddress2 = 0;
+  hi2c4.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c4.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c4.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c4) != HAL_OK)
   {
     Error_Handler();
   }
   /** Configure Analogue filter 
   */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c4, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
   /** Configure Digital filter 
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c4, 0) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN I2C1_Init 2 */
+  /* USER CODE BEGIN I2C4_Init 2 */
 
-  /* USER CODE END I2C1_Init 2 */
+  /* USER CODE END I2C4_Init 2 */
 
 }
 
