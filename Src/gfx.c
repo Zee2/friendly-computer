@@ -53,7 +53,7 @@ uint8_t draw_char_scaled(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint
 
   for(y = 0; y < 9*scale; y++){
     for(x = 0; x < width*scale; x++){
-      fb[pos_x + x + (pos_y + y) * 480] = NeoSans[x/scale + startpos + 551*y/scale];
+      fb[pos_x + x + (pos_y + y) * 480] = NeoSans[(x>>scale-1) + startpos + 551*(y>>scale-1)];
     }
   }
 
