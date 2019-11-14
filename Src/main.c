@@ -23,9 +23,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "math.h"
+#include <math.h>
+#include <string.h>
 #include "font.h"
 #include "gfx.h"
+#include "gui.h"
+#include "smile.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,8 +76,6 @@ static void MX_I2C4_Init(void);
 
 uint8_t framebuffer1[480*272];
 uint8_t framebuffer2[480*272];
-
-enum InterfacePage {startup, home, settings, registers, error};
 
 uint16_t counter = 0;
 
@@ -162,7 +163,7 @@ int main(void)
 
   uint8_t* currentFB = &framebuffer1[0];
 
-  HAL_LTDC_SetAddress(&hltdc, (currentFB), 0);
+  HAL_LTDC_SetAddress(&hltdc, (uint32_t)(currentFB), 0);
 
 
   //HAL_I2C_Mem_Write(&hi2c1, 0x70, 0x0, 4, &(data[0]), 4, 100000);
@@ -177,12 +178,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (counter == 3000)
+	  if (counter == 700)
 	  {
 		  ClearScreen(currentFB);
 		  currentPage = home;
 	  }
-	  DrawMenu(currentPage, currentFB);
+	  DrawMenu(currentPage, currentFB, counter);
 
 	  /*
 	  if(counter % 2 == 0){
@@ -192,7 +193,7 @@ int main(void)
 	  }
 		*/
 
-	 HAL_LTDC_SetAddress(&hltdc, currentFB, 0);
+	 HAL_LTDC_SetAddress(&hltdc, (uint32_t)(currentFB), 0);
 
 
 	 counter+=1;
@@ -215,38 +216,6 @@ int main(void)
 
   }
   /* USER CODE END 3 */
-}
-
-/**
-  * @brief  Draws appropriate menu page
-  * @retval none
-  */
-void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB) {
-	  char teststring1[64];
-	  char* startupmessage = "Welcome to the friendly computer!";
-
-	if (currentPage == startup) 
-  {
-
-		draw_string_scaled(startupmessage, strlen(startupmessage), 100, 20, currentFB, 2);
-
-	} 
-  else if (currentPage == home)
-  {
-    draw_string("Home", strlen("Home"), 20, 10, currentFB);
-		snprintf(teststring1, 64, "%d %d %d %d %d %d %d %d", counter, counter,
-				counter, counter, counter, counter, counter, counter);
-		for (int j = 0; j < 1; j++) {
-			draw_string(teststring1, strlen(teststring1), 20, 20 + 10 * j,
-					currentFB);
-		}
-    draw_hor_line(10, 100, 40, 0x00, currentFB);
-    draw_vert_line(10, 20, 100, 0x00, currentFB);
-    draw_rect(40, 50, 100, 100, 0x00, currentFB);
-    int x = (counter % 480);
-	 int y = ((sin(counter * 0.01) + 1.0)/2.0) * 270;
-	 currentFB[x + 480*y] = 0x00;
-	}
 }
 
 /**
