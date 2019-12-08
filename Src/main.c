@@ -29,10 +29,7 @@
 #include "gfx.h"
 #include "gui.h"
 #include "smile.h"
-#include "simulator/simulator.h"
-#include "simulator/opcodes.h"
-#include "simulator/decode.h"
-#include "simulator/core.h"
+#include "runner.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -163,8 +160,6 @@ int main(void)
 
 
 
-
-
   uint8_t* currentFB = &framebuffer1[0];
 
   HAL_LTDC_SetAddress(&hltdc, (uint32_t)(currentFB), 0);
@@ -182,6 +177,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+  
+
+    init();
+    run_tick(currentFB);
+
 	  if (counter == 700)
 	  {
 		  ClearScreen(currentFB);

@@ -15,7 +15,7 @@
 #include "simulator/core.h"
 
 void init();
-void run_tick();
+void run_tick(uint8_t* fb);
 
 
 

@@ -70,6 +70,8 @@ void draw_string(uint8_t* str, uint16_t n, uint16_t pos_x, uint16_t pos_y, uint8
     uint16_t horiz_pos = pos_x;
 
     for(i = 0; i < n; i++){
+        if(str[i] == '\0')
+            break;
         horiz_pos += draw_char(str[i], horiz_pos, pos_y, fb);
     }
 }
@@ -79,6 +81,8 @@ void draw_string_scaled(uint8_t* str, uint16_t n, uint16_t pos_x, uint16_t pos_y
     uint16_t horiz_pos = pos_x;
 
     for(i = 0; i < n; i++){
+        if(str[i] == '\0')
+            break;
         horiz_pos += (uint16_t)(draw_char_scaled(str[i], horiz_pos, pos_y, fb, scale) * 0.9);
     }
 }
