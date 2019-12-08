@@ -29,6 +29,10 @@
 #include "gfx.h"
 #include "gui.h"
 #include "smile.h"
+#include "simulator/simulator.h"
+#include "simulator/opcodes.h"
+#include "simulator/decode.h"
+#include "simulator/core.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
