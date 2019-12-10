@@ -474,6 +474,57 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(REGFILE_BANK, REGFILE_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(RS1_BANK, RS1_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(RS2_BANK, RS2_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(MEMORY_BANK, MEMORY_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(ALU_BANK, ALU_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(IMM_BANK, IMM_PIN, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : REGFILE (PC8) */
+  GPIO_InitStruct.Pin = REGFILE_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(REGFILE_BANK, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = RS1_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RS1_BANK, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = RS2_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RS2_BANK, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = MEMORY_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(MEMORY_BANK, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = ALU_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(ALU_BANK, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = IMM_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(IMM_BANK, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
