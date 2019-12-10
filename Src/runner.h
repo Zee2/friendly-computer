@@ -14,9 +14,10 @@
 #include "simulator/decode.h"
 #include "simulator/core.h"
 #include "main.h"
+#include "daughter.h"
 
 void init(I2C_HandleTypeDef* i2c, uint8_t* fb);
-void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
+void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb, daughter_board_t* board);
 void run_backwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
 
 

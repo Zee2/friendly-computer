@@ -1,6 +1,8 @@
 #ifndef DAUGHTER_H
 #define DAUGHTER_H
 
+#include "main.h"
+
 #define REGFILE_BANK    GPIOC
 #define REGFILE_PIN     GPIO_PIN_8
 
@@ -29,6 +31,6 @@ typedef struct daughter_board_t {
   int imm;
 } daughter_board_t;
 
-void set_daughter_state(daughet_board_t* board);
+void set_daughter_state(daughter_board_t* board);
 
 #endif

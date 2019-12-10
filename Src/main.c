@@ -206,7 +206,7 @@ int main(void)
 		  ClearScreen(currentFB);
 		  currentPage = home;
 		  init(&hi2c4, currentFB);
-		  run_forwards(&hi2c4, currentFB);
+		  run_forwards(&hi2c4, currentFB, &daughter_board);
 	  }
 	  DrawMenu(currentPage, &hi2c4, currentFB, counter);
 
