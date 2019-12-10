@@ -135,7 +135,7 @@ void update_display(I2C_HandleTypeDef* i2c, uint8_t* fb){
 
 }
 
-void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb){
+void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb, daughter_board_t* board){
 
 	int ypos = 0;
 	int ins_scroll = 0;
@@ -144,7 +144,7 @@ void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb){
 	int counter = 0;
 
 	char pretty_printed[128];
-	int result = execute_rv32i(&main_memory, &processor_states[MODULO(cursor, 128)], &processor_states[MODULO(cursor+1, 128)], &printed[32*MODULO(cursor, 128)]);
+	int result = execute_rv32i(&main_memory, &processor_states[MODULO(cursor, 128)], &processor_states[MODULO(cursor+1, 128)], &printed[32*MODULO(cursor, 128)], board);
 
 	if(result != 0){
 		printf("Error!\n");
