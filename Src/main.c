@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include <math.h>
 #include <string.h>
+#include <stdio.h>
 #include "font.h"
 #include "gfx.h"
 #include "gui.h"
@@ -59,6 +60,8 @@ I2C_HandleTypeDef hi2c4;
 
 LTDC_HandleTypeDef hltdc;
 
+TIM_HandleTypeDef htim1;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -68,6 +71,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_LTDC_Init(void);
 static void MX_I2C4_Init(void);
+static void MX_TIM1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -114,6 +118,7 @@ int main(void)
   MX_GPIO_Init();
   MX_LTDC_Init();
   MX_I2C4_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -170,6 +175,13 @@ int main(void)
 
   ClearScreen(currentFB);
 
+  init();
+
+  HAL_TIM_Encoder_Start(&htim1,TIM_CHANNEL_ALL);  
+
+  int count = 0;
+  char message[128];
+
 
   while (1)
   {
@@ -178,17 +190,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-  
 
-    init();
-    run_tick(currentFB);
-
-	  if (counter == 700)
+	  if (counter == 500)
 	  {
 		  ClearScreen(currentFB);
 		  currentPage = home;
 	  }
-	  DrawMenu(currentPage, currentFB, counter);
+	  DrawMenu(currentPage, &hi2c4, currentFB, counter);
 
 	  /*
 	  if(counter % 2 == 0){
@@ -203,21 +211,6 @@ int main(void)
 
 	 counter+=1;
 
-
-	 data[0] = 0xFF;
-	 for(int i = 0; i < 8; i+=1){
-		 data[i<<1] = 1 << ((i + counter / 2) % 8);
-		 //data[i+1+8] = 1 << (i << 1);
-	 }
-	 for(int i = 0; i < 8; i+=1){
-		 //data[(i<<1) + 1] = (unsigned int)(128) >> ((i + (counter / 10))%8 );
-		 data[(i<<1) + 1] = 1 << ((i + (counter / 2))%8 );
-		 //data[i+1+8] = 1 << (i << 1);
-	 }
-
-
-	 HAL_I2C_Mem_Write(&hi2c4, 0x70 << 1, 0x0, 1, &(data[0]), 16, 1000);
-	 HAL_I2C_Mem_Write(&hi2c4, 0x72 << 1, 0x0, 1, &(data[0]), 16, 1000);
 
   }
   /* USER CODE END 3 */
@@ -401,6 +394,57 @@ static void MX_LTDC_Init(void)
   /* USER CODE BEGIN LTDC_Init 2 */
 
   /* USER CODE END LTDC_Init 2 */
+
+}
+
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_Encoder_InitTypeDef sConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 65535;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+  sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC1Filter = 10;
+  sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC2Filter = 10;
+  if (HAL_TIM_Encoder_Init(&htim1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
 
 }
 

@@ -12,11 +12,15 @@
 #include "smile.h"
 #include <math.h>
 
+#define SENSITIVITY 4
+
+int last_encoder = 0;
+
 /**
   * @brief    Draws appropriate menu page
   * @retval none
   */
-void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB, uint16_t counter) {
+void DrawMenu(enum InterfacePage currentPage, I2C_HandleTypeDef* i2c, uint8_t* currentFB, uint16_t counter) {
     char teststring1[64];
     char* startupmessage = "Welcome to the friendly computer!";
 
@@ -30,10 +34,15 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB, uint16_t count
         draw_string_scaled("Home", strlen("Home"), 65, 20, currentFB, 2);
         draw_sprite_scaled(0, 0, 32, 32, &smiley_face, currentFB, 2);
 
-        draw_string_scaled("addi R3, R6, 45", strlen("ADDI R3, R6, 45"), 255, 80, currentFB, 2);
-        draw_string_scaled("xor  R3, R6, R1", strlen("XOR  R3, R6, R1"), 255, 100, currentFB, 2);
-        draw_string_scaled("bne  R3, R6, 10", strlen("BNE  R3, R6, 10"), 255, 120, currentFB, 2);
-        draw_string_scaled("and  R1, R2, R3", strlen("AND  R1, R2, R3"), 255, 140, currentFB, 2);
+        int new = -TIM1->CNT/SENSITIVITY;
+        
+        if(new > last_encoder)
+            run_forwards(i2c, currentFB);
+        else if(new < last_encoder)
+            run_backwards(i2c, currentFB);
+
+        last_encoder = new;
+
 
         //draw_rect_unfilled(100, 100, 50, 60, 3, 0, currentFB);
 

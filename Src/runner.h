@@ -13,9 +13,11 @@
 #include "simulator/opcodes.h"
 #include "simulator/decode.h"
 #include "simulator/core.h"
+#include "main.h"
 
 void init();
-void run_tick(uint8_t* fb);
+void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
+void run_backwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
 
 
 

@@ -40,7 +40,7 @@ uint8_t draw_char_scaled(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint
     if(character == 0x20){
         for(y = 0; y < 9*scale; y++){
             for(x = 0; x < 4*scale; x++){
-                //fb[pos_x + x + (pos_y + y) * 480] = 0xFF;
+                fb[pos_x + x + (pos_y + y) * 480] = 0xFF;
             }
         }
 
@@ -56,8 +56,7 @@ uint8_t draw_char_scaled(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint
     for(y = 0; y < 9*scale; y++){
         for(x = 0; x < width*scale; x++){
             pixel = NeoSans[(x>>scale-1) + startpos + 551*(y>>scale-1)];
-            if(pixel == 0)
-                fb[pos_x + x + (pos_y + y) * 480] = pixel;
+            fb[pos_x + x + (pos_y + y) * 480] = pixel;
         }
     }
     //TODO: Convert mult to bit shifting

@@ -70,7 +70,7 @@ uint32_t store_width(memory_t* memory, uint32_t word, uint32_t byte_addr, uint8_
 }
 
 
-int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next){
+int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char* printed){
     if(prev == NULL || next == NULL || memory == NULL){
         return -1;
     }
@@ -100,10 +100,7 @@ int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next){
     instruction_rv32i_t decoded_ins;
     decode_rv32i(instruction_bits, &decoded_ins);
     
-    char printme[128];
-    pretty_print_rv32i(decoded_ins, printme);
-    printme[127] = "\0";
-    printf("Pretty-print: %s\n", printme);
+    pretty_print_rv32i(decoded_ins, printed);
 
     // Each exec function will write to this as the return value
     int exec_result = 0; 
