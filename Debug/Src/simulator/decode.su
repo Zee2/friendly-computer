@@ -1,0 +1,5 @@
+decode.c:16:5:decode_rv32i	24	static
+decode.c:97:5:pretty_print_rv32i	56	static
+decode.c:235:5:decode_compressed	24	static
+decode.c:263:10:detangle_imm_load_store	32	static
+decode.c:271:5:decode_C0	24	static

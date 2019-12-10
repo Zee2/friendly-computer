@@ -1,0 +1,12 @@
+core.c:39:10:fetch_width	32	static
+core.c:58:10:store_width	32	static
+core.c:73:5:execute_rv32i	176	static
+core.c:158:5:execute_reg_reg	32	static
+core.c:231:5:execute_imm_arith	24	static
+core.c:265:5:execute_load	48	static
+core.c:324:5:execute_store	48	static
+core.c:336:5:execute_lui	24	static
+core.c:342:5:execute_auipc	32	static
+core.c:348:5:execute_branch	40	static
+core.c:378:5:execute_jal	32	static
+core.c:387:5:execute_jalr	32	static

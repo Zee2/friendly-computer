@@ -60,7 +60,7 @@ uint8_t draw_char_scaled(uint8_t character, uint16_t pos_x, uint16_t pos_y, uint
                 fb[pos_x + x + (pos_y + y) * 480] = pixel;
         }
     }
-
+    //TODO: Convert mult to bit shifting
     return width*scale;
 }
 
@@ -123,6 +123,17 @@ void draw_rect(uint16_t pos_x, uint16_t pos_y, uint16_t width, uint16_t height, 
         {
             fb[x + (y) * SCREEN_WIDTH] = color;
         }
+    }
+}
+
+void draw_rect_unfilled(uint16_t pos_x, uint16_t pos_y, uint16_t width, uint16_t height, uint8_t thickness, uint8_t color, uint8_t* fb)
+{
+    for (int i = 0; i < thickness; i++)
+    {
+        draw_hor_line(pos_x, pos_x + width, pos_y+i, color, fb);
+        draw_hor_line(pos_x, pos_x + width, pos_y+height-i, color, fb);
+        draw_vert_line(pos_x+i, pos_y, pos_y + height, color, fb);
+        draw_vert_line(pos_x+width-i, pos_y, pos_y + height, color, fb);
     }
 }
 

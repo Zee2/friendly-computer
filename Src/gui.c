@@ -35,6 +35,8 @@ void DrawMenu(enum InterfacePage currentPage, uint8_t* currentFB, uint16_t count
         draw_string_scaled("bne  R3, R6, 10", strlen("BNE  R3, R6, 10"), 255, 120, currentFB, 2);
         draw_string_scaled("and  R1, R2, R3", strlen("AND  R1, R2, R3"), 255, 140, currentFB, 2);
 
+        //draw_rect_unfilled(100, 100, 50, 60, 3, 0, currentFB);
+
         /*
         draw_hor_line(10, 100, 40, 0x00, currentFB);
         draw_vert_line(10, 20, 100, 0x00, currentFB);
