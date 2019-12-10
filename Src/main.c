@@ -31,6 +31,7 @@
 #include "gui.h"
 #include "smile.h"
 #include "runner.h"
+#include "daughter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
