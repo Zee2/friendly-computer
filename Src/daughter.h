@@ -3,23 +3,29 @@
 
 #include "main.h"
 
-#define REGFILE_BANK    GPIOC
-#define REGFILE_PIN     GPIO_PIN_8
+// D11
+#define REGFILE_BANK    GPIOB
+#define REGFILE_PIN     GPIO_PIN_5
 
-#define RS1_BANK        GPIOC
-#define RS1_PIN         GPIO_PIN_9
+// D10
+#define RS1_BANK        GPIOD
+#define RS1_PIN         GPIO_PIN_14
 
-#define RS2_BANK        GPIOA
-#define RS2_PIN         GPIO_PIN_8
+// D9
+#define RS2_BANK        GPIOD
+#define RS2_PIN         GPIO_PIN_15
 
-#define MEMORY_BANK     GPIOA
-#define MEMORY_PIN      GPIO_PIN_9
+// D8
+#define MEMORY_BANK     GPIOF
+#define MEMORY_PIN      GPIO_PIN_3
 
-#define ALU_BANK        GPIOA
-#define ALU_PIN         GPIO_PIN_11
+// D7
+#define ALU_BANK        GPIOG
+#define ALU_PIN         GPIO_PIN_12
 
-#define IMM_BANK        GPIOA
-#define IMM_PIN         GPIO_PIN_12
+// D3
+#define IMM_BANK        GPIOE
+#define IMM_PIN         GPIO_PIN_13
 
 typedef struct daughter_board_t {
   // Set to 0 to disable; 1 to enable these lighting zones
