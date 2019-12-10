@@ -175,7 +175,7 @@ int main(void)
 
   ClearScreen(currentFB);
 
-  init();
+
 
   HAL_TIM_Encoder_Start(&htim1,TIM_CHANNEL_ALL);  
 
@@ -195,6 +195,8 @@ int main(void)
 	  {
 		  ClearScreen(currentFB);
 		  currentPage = home;
+		  init(&hi2c4, currentFB);
+		  run_forwards(&hi2c4, currentFB);
 	  }
 	  DrawMenu(currentPage, &hi2c4, currentFB, counter);
 

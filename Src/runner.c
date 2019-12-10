@@ -59,7 +59,7 @@ char printed[32*128];
 
 int cursor;
 
-void init(){
+void init(I2C_HandleTypeDef* i2c, uint8_t* fb){
 
 	for(int i = 0; i < REGFILE_SIZE; i++){
 		processor_states[0].regfile[i] = 0;
@@ -68,6 +68,8 @@ void init(){
 
 		processor_states[i].pc_reg = 0;
 	}
+
+	update_display(i2c, fb);
 
 }
 

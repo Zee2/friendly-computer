@@ -15,7 +15,7 @@
 #include "simulator/core.h"
 #include "main.h"
 
-void init();
+void init(I2C_HandleTypeDef* i2c, uint8_t* fb);
 void run_forwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
 void run_backwards(I2C_HandleTypeDef* i2c, uint8_t* fb);
 
