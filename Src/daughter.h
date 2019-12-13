@@ -37,6 +37,8 @@ typedef struct daughter_board_t {
   int imm;
 } daughter_board_t;
 
+
+extern daughter_board_t dboard;
 void set_daughter_state(daughter_board_t* board);
 
 #endif

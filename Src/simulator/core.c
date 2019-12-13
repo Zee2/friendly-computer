@@ -70,7 +70,7 @@ uint32_t store_width(memory_t* memory, uint32_t word, uint32_t byte_addr, uint8_
 }
 
 
-int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char* printed){
+int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char* printed, daughter_board_t* board){
     if(prev == NULL || next == NULL || memory == NULL){
         return -1;
     }
@@ -112,41 +112,96 @@ int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char
         exec_result = execute_reg_reg(instruction_bits,
                                 decoded_ins.r_data,
                                 next->regfile);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     case OP_IMM:
         exec_result = execute_imm_arith(instruction_bits,
                                 decoded_ins.i_data,
                                 next->regfile);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 0;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 1;
         break;
     case OP_LD:
         exec_result = execute_load(decoded_ins.i_data,
                                 memory,
                                 next->regfile);
+        board->regfile = 1;
+        board->rs1 = 0;
+        board->rs2 = 1;
+        board->memory = 1;
+        board->alu = 0;
+        board->imm = 0;
         break;
     case OP_ST:
         exec_result = execute_store(decoded_ins.s_data,
                                 memory,
                                 next->regfile);
+        board->regfile = 0;
+        board->rs1 = 0;
+        board->rs2 = 1;
+        board->memory = 1;
+        board->alu = 0;
+        board->imm = 0;
         break;
     case OP_AUIPC:
         exec_result = execute_auipc(decoded_ins.u_data, next->pc_reg, next->regfile);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     case OP_LUI:
         exec_result = execute_lui(decoded_ins.u_data, next->regfile);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     case OP_BR:
         exec_result = execute_branch(decoded_ins.b_data, next->regfile, next);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     case OP_JAL:
         exec_result = execute_jal(decoded_ins.j_data, next->regfile, next);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     case OP_JALR:
         exec_result = execute_jalr(decoded_ins.i_data, next->regfile, next);
+        board->regfile = 1;
+        board->rs1 = 1;
+        board->rs2 = 1;
+        board->memory = 0;
+        board->alu = 1;
+        board->imm = 0;
         break;
     default:
         printf(" UNSUPPORTED: opcode 0x%x \n", decoded_ins.opcode);
         break;
     }
+    set_daughter_state(board);
     next->regfile[0] = 0;
     next->pc_reg += 4;
     return exec_result;

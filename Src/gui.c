@@ -10,6 +10,7 @@
 #include "gui.h"
 #include "gfx.h"
 #include "smile.h"
+#include "main.h"
 #include <math.h>
 
 #define SENSITIVITY 4
@@ -36,7 +37,7 @@ void DrawMenu(enum InterfacePage currentPage, I2C_HandleTypeDef* i2c, uint8_t* c
 
         int new = -TIM1->CNT/SENSITIVITY;
         
-        if(new > last_encoder)
+        if(new > last_encoder || HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
             run_forwards(i2c, currentFB);
         else if(new < last_encoder)
             run_backwards(i2c, currentFB);

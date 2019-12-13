@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 #include "simulator.h"
+#include "../daughter.h"
 
 #define REGFILE_SIZE 32
 
@@ -19,7 +20,7 @@ typedef struct core_state_t
 } core_state_t;
 
 
-int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char* pretty_printed);
+int execute_rv32i(memory_t* memory, core_state_t* prev, core_state_t* next, char* pretty_printed, daughter_board_t* board);
 
 uint32_t fetch_width(memory_t* memory, uint32_t byte_addr, uint8_t width, uint8_t check);
 
